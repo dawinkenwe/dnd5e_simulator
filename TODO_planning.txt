@@ -1,0 +1,26 @@
+Improvements to Add
+
+Make a simulated fight - similar to existing code
+
+
+Calculate advantage / disadvantage
+
+6) Surprise Rounds
+7) Positions
+8) Movement
+11) 
+
+
+
+Completed Improvements
+- Don't technically need this, just makes me feel good.
+1) Damage Types
+10) Temporary Hit Points
+2) Vulnerabilities
+3) Resistances
+3) Immunities
+4) Critical Hits
+5) apply Advantage / Disadvantage
+9) Refactor into cleaner - or at least more complicated - objects
+
+

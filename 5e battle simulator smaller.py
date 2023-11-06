@@ -2,8 +2,6 @@ from collections import defaultdict, deque
 from random import randint
 from typing import List
 
-# TODO - Vulnerabilities
-# TODO - Stat blocks
 """
 Acceptance Criteria:
 1) Can add combatants to battle
@@ -15,7 +13,8 @@ Acceptance Criteria:
 7) When complete, return stats about winning side
 """
 
-
+# TODO - Stat blocks
+# TODO - Vulnerabilities
 # TODO - spells
 # TODO - Conditions
 # TODO - Spacing / maps
@@ -26,6 +25,7 @@ Acceptance Criteria:
 # TODO - Output - strings / pretty print
 # TODO - sleep or timing
 # TODO - surprise conditions
+# TODO - Movements
 
 DEBUG = False
 

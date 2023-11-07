@@ -2,7 +2,7 @@ from random import randint
 
 
 def roll_d20(with_advantage: bool=False) -> int:
-    return randint(1,20) if not with_advantage else max([randint(1,20), randint(1, 20])
+    return randint(1,20) if not with_advantage else max([randint(1,20), randint(1, 20)])
 
 def roll_xdy(dice_str: str, individual_results: bool=False) -> int:
     dice_str = dice_str.lower()

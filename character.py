@@ -1,6 +1,7 @@
 from damage import Damage, DamageType
 from dice_roller import roll_d20, roll_xdy
 from health_pool import HealthPool
+from typing import List
 from weapon import Weapon
 
 class Character:
@@ -22,10 +23,11 @@ class Character:
         self.damage_resistances = damage_resistances
         self.weapon_proficiencies = weapon_proficiencies
         self.number_of_attacks = number_of_attacks
+        self.weapon=weapon
 
     def adjust_incoming_damage(self, damage: Damage) -> int:
-        dmg_type = dmg.get_type()
-        dmg = dmg.get_dmg()
+        dmg_type = damage.get_type()
+        dmg = damage.get_dmg()
         if dmg_type in self.damage_resistances:
             return dmg // 2
         if dmg_type in self.damage_immunities:
@@ -35,7 +37,9 @@ class Character:
         return dmg
 
     def take_damage(self, damage: Damage) -> None:
+        print(f"Damage amt {damage.dmg} of type {damage.dmg_type}")
         adjusted_damage = self.adjust_incoming_damage(damage)
+        print(f"ADJUSTED DAMAGE {adjusted_damage}")
         self.health_pool.remove_hp(adjusted_damage)
 
     def fetch_weapon_attack_modifier(self) -> None:
@@ -46,4 +50,7 @@ class Character:
 
     def is_proficient_with_weapon(self) -> bool:
         return self.weapon.weapon_type in self.weapon_proficiencies
+
+    def get_stat_bonus(self) -> int:
+        return 0
         

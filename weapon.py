@@ -17,6 +17,7 @@ class WeaponProperties(Enum):
     LOADING = 7
     HEAVY = 8
     SPECIAL = 9
+    RANGED = 10
 
 class Weapon:
     def __init__(self,
@@ -27,7 +28,8 @@ class Weapon:
                  damage_type: DamageType,
                  versatile_damage_dice: str="",
                  damage_roll_bonus: int = 0,
-                 attack_roll_bonus: int = 0):
+                 attack_roll_bonus: int = 0,
+                 attack_range: Tuple[int, int]= [5,5]):
         self.name = name
         self.properties = properties
         self.weapon_type = weapon_type
@@ -36,6 +38,7 @@ class Weapon:
         self.versatile_damage_dice = versatile_damage_dice
         self.damage_roll_bonus = damage_roll_bonus
         self.attack_roll_bonus = attack_roll_bonus
+        self.attack_range = attack_range
 
     def get_damage_dice(self, is_two_handed: bool=False) -> str:
         if is_two_handed and VERSATILE in self.weapon_types:
@@ -50,3 +53,10 @@ class Weapon:
 
     def get_damage_roll_bonus(self) -> int:
         return self.damage_roll_bonus
+
+    # TODO: add ranged attack ranges.
+    def can_hit_enemy_at_range(self, range: int):
+        return range > self.attack_range[1]
+
+    def has_disadvantage_at_range(self, range: int):
+        return range > self.attack_range[0]

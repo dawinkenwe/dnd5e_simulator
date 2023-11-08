@@ -1,8 +1,13 @@
 from random import randint
 
 
-def roll_d20(with_advantage: bool=False) -> int:
-    return randint(1,20) if not with_advantage else max([randint(1,20), randint(1, 20)])
+def roll_d20(with_advantage: bool=False, with_disadvantage: bool=False) -> int:
+    if (not with_advantage and not with_disadvantage) or (with_advantage and with_disadvantage):
+        return randint(1, 20)
+    elif with_advantage:
+        return max([randint(1,20), randint(1, 20)])
+    else:
+        return min([randint(1,20), randint(1, 20)])
 
 def roll_xdy(dice_str: str, individual_results: bool=False) -> int:
     dice_str = dice_str.lower()

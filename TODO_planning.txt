@@ -1,5 +1,6 @@
 Keep Character sheet up in second monitor. Design based off of existing encapsulation.
 
-We need to do inventory management, and weapons.
+We should have all the components we need for some very basic things.
 
-FOR NOW. Skip item weight. Skip other things. Just make weapons and armor.
+Let's go ahead and try testing some of the classes. Start with health pool, then move to armor, weapon,
+damage, and equipment_manager. Finally tie it all in together with character_sheet.py

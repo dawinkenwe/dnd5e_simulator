@@ -25,8 +25,8 @@ class EquipmentManager:
         if type(equipment) == Weapon:
             if not equip_offhand and self.main_hand_equipment is not None:
                 return False
-            if (equip_offhand and self.off_hand_equipment is not None or
-                    self.main_hand_equipment and TWOHANDED in self.main_hand_equipment.properties):
+            if ((equip_offhand and self.off_hand_equipment is not None) or
+                    (self.main_hand_equipment and TWOHANDED in self.main_hand_equipment.properties)):
                 return False
             if TWOHANDED in weapon.properties and (self.main_hand_equipment or self.off_hand_equipment):
                 return False

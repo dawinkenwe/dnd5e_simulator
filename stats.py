@@ -11,7 +11,7 @@ class Stat(Enum):
 
 class StatBlock:
     def __init__(self, str_val=10, dex_val=10, con_val=10, int_val=10, wis_val=10, cha_val=10):
-        stats = {"str": str_val, "dex": dev_val, "con": con_val, "int": int_val, "wis": wis_val, "cha": cha_val}
+        stats = {"str": str_val, "dex": dex_val, "con": con_val, "int": int_val, "wis": wis_val, "cha": cha_val}
         self.stats = stats
 
     def get_modifier_for_stat(self, stat_str, modifiers: int = 0):

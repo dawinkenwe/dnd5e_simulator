@@ -1,23 +1,24 @@
 from damage import DamageType
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 
 
 class WeaponType(Enum):
-    SIMPLE = 1
-    MARTIAL = 2
+    SIMPLE = "simple"
+    MARTIAL = "martial"
 
 class WeaponProperties(Enum):
-    LIGHT = 1
-    FINESSE = 2
-    THROWN = 3
-    TWOHANDED = 4
-    VERSATILE = 5
-    REACH = 6
-    LOADING = 7
-    HEAVY = 8
-    SPECIAL = 9
-    RANGED = 10
+    LIGHT = "light"
+    FINESSE = "finesse"
+    THROWN = "thrown"
+    TWOHANDED = "two handed"
+    VERSATILE = "versatile"
+    REACH = "reach"
+    LOADING = "loading"
+    HEAVY = "heavy"
+    SPECIAL = "special"
+    RANGED = "ranged"
+    AMMUNITION = "ammunition"
 
 class Weapon:
     def __init__(self,
@@ -26,10 +27,10 @@ class Weapon:
                  weapon_type: WeaponType,
                  damage_dice: str,
                  damage_type: DamageType,
-                 versatile_damage_dice: str="",
+                 versatile_damage_dice: str = "",
                  damage_roll_bonus: int = 0,
                  attack_roll_bonus: int = 0,
-                 attack_range: Tuple[int, int]= [5,5]):
+                 attack_range: Tuple[int, int] = (5, 5)):
         self.name = name
         self.properties = properties
         self.weapon_type = weapon_type
@@ -41,7 +42,7 @@ class Weapon:
         self.attack_range = attack_range
 
     def get_damage_dice(self, is_two_handed: bool=False) -> str:
-        if is_two_handed and VERSATILE in self.weapon_types:
+        if is_two_handed and WeaponProperties.VERSATILE in self.properties:
             return self.versatile_damage_dice
         return self.damage_dice
 
@@ -56,7 +57,13 @@ class Weapon:
 
     # TODO: add ranged attack ranges.
     def can_hit_enemy_at_range(self, range: int):
-        return range > self.attack_range[1]
+        return not (range > self.attack_range[1])
 
     def has_disadvantage_at_range(self, range: int):
         return range > self.attack_range[0]
+
+    def __str__(self):
+        return (f"Name: {self.name}"
+                f"Properties: {[weapon_property.value for weapon_property in self.properties]}"
+                f"Weapon Type: {self.weapon_type.value}"
+                f"Damage: {self.damage_dice}, {self.damage_type.value}")

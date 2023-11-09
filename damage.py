@@ -1,19 +1,19 @@
 from enum import Enum
 
 class DamageType(Enum):
-    BLUDGEONING = 1
-    PIERCING = 2
-    SLASHING = 3
-    ACID = 4
-    COLD = 5
-    FIRE = 6
-    POINSON = 7
-    PSYCHIC = 8
-    RADIANT = 9
-    FORCE = 10
-    LIGHTNING = 11
-    NECROTIC = 12
-    THUNDER = 13
+    BLUDGEONING = "bludgeoning"
+    PIERCING = "piercing"
+    SLASHING = "slashing"
+    ACID = "acid"
+    COLD = "cold"
+    FIRE = "fire"
+    POINSON = "poison"
+    PSYCHIC = "psychic"
+    RADIANT = "radiant"
+    FORCE = "force"
+    LIGHTNING = "lightning"
+    NECROTIC = "necrotic"
+    THUNDER = "thunder"
 
 class Damage:
     def __init__(self, dmg, dmg_type, is_magical=False):

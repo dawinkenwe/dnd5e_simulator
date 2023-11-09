@@ -1,6 +1,6 @@
 from armor import Armor, Shield
 from weapon import Weapon
-from weapon.WeaponProperties import TWOHANDED
+from weapon import WeaponProperties
 
 from typing import List, Optional, Union
 
@@ -12,28 +12,31 @@ class CannotEquipWeapon(Exception):
     def __str__(self):
         return f"Could not equip {self.equipment_name} to {self.slot}. Please check that slot is empty."
 
+
 # TODO: Versatile weapons. : (
 class EquipmentManager:
-    def __init__(self, weapons: List[Weapon]=[], armors: List[Armor]=[], main_hand_equipment: Weapon=None,
-                 off_hand_equipment: Union[Weapon, Shield]=None, armor_equipped: Armor=None):
+    def __init__(self, weapons: List[Weapon] = None, armors: List[Armor] = None, main_hand_equipment: Weapon = None,
+                 off_hand_equipment: Union[Weapon, Shield] = None, armor_equipped: Armor = None):
         self.main_hand_equipment = main_hand_equipment
         self.off_hand_equipment = off_hand_equipment
         self.armor_equipped = armor_equipped
+        self.weapons = weapons if weapons is not None else []
+        self.armors = armors if armors is not None else []
 
     # TODO: Handle case where equipment is not in equipment?
     def can_equip(self, equipment: Union[Armor, Weapon], equip_offhand: bool=False) -> bool:
-        if type(equipment) == Weapon:
+        if type(equipment) is Weapon:
             if not equip_offhand and self.main_hand_equipment is not None:
                 return False
             if ((equip_offhand and self.off_hand_equipment is not None) or
-                    (self.main_hand_equipment and TWOHANDED in self.main_hand_equipment.properties)):
+                    (self.main_hand_equipment and WeaponProperties.TWOHANDED in self.main_hand_equipment.properties)):
                 return False
-            if TWOHANDED in weapon.properties and (self.main_hand_equipment or self.off_hand_equipment):
+            if WeaponProperties.TWOHANDED in equipment.properties and (self.main_hand_equipment or self.off_hand_equipment):
                 return False
-        elif type(equipment) == Shield:
+        elif type(equipment) is Shield:
             if not equip_offhand or self.main_hand_equipment is not None:
                 return False
-        elif type(equipment) == Armor:
+        elif type(equipment) is Armor:
             return not self.armor_equipped
         return True
 
@@ -43,7 +46,7 @@ class EquipmentManager:
             slot = "armor"
             if equipment_type in [Weapon, Shield]:
                 slot = "offhand" if equip_offhand else "main_hand"
-            raise CannotEquipWeapon(slot=slot, equipment_name=weapon.name)
+            raise CannotEquipWeapon(slot=slot, equipment_name=equipment.name)
         if equipment_type in [Weapon, Shield]:
             if equip_offhand:
                 self.off_hand_equipment = equipment
@@ -63,17 +66,13 @@ class EquipmentManager:
     def get_total_ac_bonus(self) -> int:
         ac_bonus = 0
         if self.armor_equipped:
-            ac_bonus += armor_equipped.get_ac_bonus()
-        if self.off_hand_equipment and type(self.off_hand_equipment) == Shield:
+            ac_bonus += self.armor_equipped.get_ac_bonus()
+        if self.off_hand_equipment and type(self.off_hand_equipment) is Shield:
             ac_bonus += self.off_hand_equipment.get_ac_bonus()
         return ac_bonus
 
     def get_max_ac_dex_bonus(self) -> int:
-        return self.armor_equipped.get_max_ac_dex_bonus() if armor_equipped else float('inf')
+        return self.armor_equipped.get_max_ac_dex_bonus() if self.armor_equipped else float('inf')
 
     def get_equipped_weapons(self) -> List[Weapon]:
-        if TWOHANDED in self.main_hand_equipment.properties:
-            return [self.main_hand_equipment]
-        if self.off_hand_equipment and type(self.off_hand_equipment) is Weapon:
-            return [self.main_hand_equipment, self.off_hand_equipment]
-        return self.main_hand_equipment
+        return [self.main_hand_equipment, self.off_hand_equipment]

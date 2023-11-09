@@ -27,7 +27,10 @@ class TestEquipmentManager(unittest.TestCase):
         self.equipment_manager = EquipmentManager()
 
     def test_equip_weapon_works(self):
-        pass
+        self.equipment_manager.equip_equipment(self.light_armor)
+        self.equipment_manager.equip_equipment(self.bow)
+        self.assertEqual(self.equipment_manager.main_hand_equipment, self.bow)
+        self.assertEqual(self.equipment_manager.armor_equipped, self.light_armor)
 
 
 if __name__ == '__main__':

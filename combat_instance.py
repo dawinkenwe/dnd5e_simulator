@@ -3,13 +3,18 @@ from combattant import Combattant
 from typing import List
 
 class CombatInstance:
-    def __init__(self, heroes: List[Combattant], enemies: List[Combattant]):
+    def __init__(self, heroes: List[Combattant], enemies: List[Combattant], debug_print=True):
         self.heroes = heroes
         self.enemies = enemies
         self.num_enemies = len(enemies)
         self.num_heroes = len(heroes)
         self.turn_queue = None
         self.initiatives = []
+        self.debug_print = debug_print
+        
+    def dprint(self, print_str):
+        if self.debug_print:
+            print(print_str)
 
     def roll_for_initiatives(self):
         for hero in self.heroes:
@@ -33,26 +38,26 @@ class CombatInstance:
         targets = self.enemies if is_hero else self.heroes
         target = combattant.pick_target(targets)
 
-        for _ in range(combattant.character.number_of_attacks):
+        for _ in range(combattant.character_sheet.number_of_attacks):
             target = combattant.pick_target(targets)
             if not target:
                 break
             to_hit = combattant.make_attack_roll()
             is_crit = to_hit[1]
             to_hit = to_hit[0]
-            print(f"{combattant.name} rolled a {to_hit} to hit")
+            self.dprint(f"{combattant.name} rolled a {to_hit} to hit")
             if target.does_attack_hit(to_hit):
                 damage = combattant.make_damage_roll(is_critical=is_crit)
-                print(f"{combattant.name} hit {target.name} for {damage.dmg} {damage.dmg_type} damage")
+                self.dprint(f"{combattant.name} hit {target.name} for {damage.dmg} {damage.dmg_type} damage")
                 target.take_damage(damage)
                 if target.is_down():
-                    print(f"{target.name} is DEAD")
+                    self.dprint(f"{target.name} is DEAD")
                     if target in self.enemies:
                         self.num_enemies -= 1
                     else:
                         self.num_heroes -= 1
             else:
-                print(f"{combattant.name} missed {target.name}")
+                self.dprint(f"{combattant.name} missed {target.name}")
 
     def move_to_next_turn(self) -> None:
         self.turn_queue.rotate(-1)
@@ -65,10 +70,10 @@ class CombatInstance:
         while not self.is_combat_over():
             self.do_current_turn()
             self.move_to_next_turn()
-        print("Combat is over! Survivors below.")
+        self.dprint("Combat is over! Survivors below.")
         for combattant in self.turn_queue:
             if combattant.get_current_hp() > 0:
-                print(combattant)
+                self.dprint(combattant)
         if self.num_enemies == 0:
             return ("Heroes", self.heroes)
         else:

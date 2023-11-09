@@ -18,8 +18,7 @@ class HealthPool:
     def add_hp(self, hp_to_add: int) -> int:
         if self.is_dead():
             return
-        if self.current_hp < 1:
-            self.current_hp = 0
+        if not self.is_conscious:
             self.reset_death_saves()
         if hp_to_add + self.current_hp > self.max_hp:
             overflow = (self.max_hp - self.current_hp)
@@ -32,7 +31,7 @@ class HealthPool:
     def add_temporary_hp(self, hp_to_add: int) -> None:
         if self.is_dead():
             return
-        if self.current_hp <= 0:
+        if not self.is_conscious():
             self.reset_death_saves()
         self.temporary_hp += hp_to_add
 
@@ -51,9 +50,9 @@ class HealthPool:
                 self.temporary_hp = 0
 
         self.current_hp -= hp_to_remove
-        if self.current_hp < -1 * self.max_hp:
+        if self.current_hp < -self.max_hp:
             self.death_save_failures = 3
-        if self.current_hp < 1:
+        if self.current_hp < 0:
             self.current_hp = 0
 
     def roll_death_save(self) -> None:

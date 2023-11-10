@@ -55,15 +55,18 @@ class HealthPool:
         if self.current_hp < 0:
             self.current_hp = 0
 
+    # Returns True if successful, False if failure..
     def roll_death_save(self) -> None:
         roll = roll_d20()
-        if roll == 20:
-            self.reset_death_saves()
-            self.current_hp = 1
-        elif roll >= 10:
+        if roll >= 10:
             self.death_save_successes += 1
+            if roll == 20:
+                self.current_hp = 1
+                self.reset_death_saves()
+            return True
         else:
             self.death_save_failures += 1
+            return False
 
     def reset_death_saves(self) -> None:
         self.death_save_failures = 0

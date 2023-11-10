@@ -28,7 +28,9 @@ class CharacterSheet:
                  damage_vulnerabilities: List[DamageType] = None,
                  damage_immunities: List[DamageType] = None,
                  damage_resistances: List[DamageType] = None,
-                 damage_roll_bonuses: List[int] = None
+                 damage_roll_bonuses: List[int] = None,
+                 movement_speed: int = 30,
+                 fly_speed: int = 0
                  ):
         self.stat_block = stat_block
         self.skill_proficiencies = skill_proficiencies if skill_proficiencies is not None else []
@@ -47,6 +49,8 @@ class CharacterSheet:
         self.damage_immunities = [] if damage_immunities is None else damage_immunities
         self.name = name
         self.damage_roll_bonuses = [] if damage_roll_bonuses is None else damage_roll_bonuses
+        self.movement_speed = movement_speed
+        self.fly_speed = fly_speed
 
     def is_proficient_with_skill(self, skill: Skill) -> bool:
         return skill in self.skill_proficiencies

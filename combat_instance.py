@@ -29,8 +29,22 @@ class CombatInstance:
     def do_current_turn(self) -> None:
         combattant = self.turn_queue[0]
 
-        # Saving Throws would go here
-        if combattant.is_down():
+        if combattant.is_dead():
+            return
+
+        if not combattant.is_conscious():
+            revived = combattant.roll_death_saving_throw()
+            # revived = False
+            if revived and combattant.is_conscious():
+                self.dprint(f"{combattant.name} CRIT death save and is conscious again.")
+                if combattant in self.heroes:
+                    self.num_heroes += 1
+                else:
+                    self.num_enemies += 1
+            return
+
+        if combattant.is_surprised:
+            combattant.is_surprised = False
             return
 
         is_hero = combattant in self.heroes
@@ -51,7 +65,7 @@ class CombatInstance:
                 self.dprint(f"{combattant.name} hit {target.name} for {damage.dmg} {damage.dmg_type} damage")
                 target.take_damage(damage)
                 if target.is_down():
-                    self.dprint(f"{target.name} is DEAD")
+                    self.dprint(f"{target.name} is Unconcious")
                     if target in self.enemies:
                         self.num_enemies -= 1
                     else:

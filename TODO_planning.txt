@@ -1,3 +1,26 @@
+None of that noise.
+
+Breaking it down in to objects based off of what I have. using language that is people language.
+
+An instance of combat (CombatInstance) has in it many combattants (Combattants)
+Combattants can be on either heroes or villains side. - tracked by two lists in the CombatInstance object.
+
+combat can be ran (CombatInstance.run()). At the start of the instance, all combattants roll for initiative
+(CombatInstance.roll_for_initiatives())
+
+combattants can be surprised. IF they are, their turn is used clearning the condition.
+
+CombatInstances also have a (Grid). The Grid represents
+
+
+Somehow the is_down function along with the death saves is fucking up the combat.
+
+
+
+
+
+
+
 Keep Character sheet up in second monitor. Design based off of existing encapsulation.
 
 We should have all the components we need for some very basic things.

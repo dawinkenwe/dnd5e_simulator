@@ -7,21 +7,28 @@ from typing import List, Tuple
 # Charater sheet retrieval stuff, etc...
 
 class Combattant:
-    def __init__(self, character_sheet: CharacterSheet, ac_override: int=0):
+    def __init__(self,
+                 character_sheet: CharacterSheet,
+                 ac_override: int=0,
+                 is_surprised: bool=False,
+                 coordinates: Tuple[int, int] = (0,0)):
         self.character_sheet = character_sheet
         self.init = 0
         self.name = character_sheet.name
         self.ac_override = ac_override
+        self.is_surprised = is_surprised
+        self.movement_remaining = self.character_sheet.movement_speed
+        self.coordinates = coordinates
 
     def calculate_ac(self) -> int:
         return self.ac_override if self.ac_override else self.character_sheet.calculate_ac()
         if self.ac_override:
             return self.ac_override
 
-    def does_combattant_have_advantage(self) -> bool:
+    def has_advantage(self) -> bool:
         return False
 
-    def does_combattant_have_disadvantage(self, range:int = 5) -> bool:
+    def has_disadvantage(self, range:int = 5) -> bool:
         return self.character_sheet.weapon.has_disadvantage_at_range(range)
 
     def does_attack_hit(self, atk_roll: int) -> bool:
@@ -36,16 +43,22 @@ class Combattant:
     def is_dead(self) -> bool:
         return self.character_sheet.health_pool.is_dead()
 
+    def is_conscious(self) -> bool:
+        return self.character_sheet.health_pool.is_conscious()
+
+    def roll_death_saving_throw(self):
+        return self.character_sheet.health_pool.roll_death_save()
+
     def get_current_hp(self) -> int:
         return self.character_sheet.health_pool.current_hp
 
     def roll_for_initiative(self) -> int:
         d20 = roll_d20()
+        dex_bonus = self.character_sheet.stat_block.get_modifier_for_stat("dex")
         self.init = d20
         return d20
         # TODO: Retrieve init bonus from character.
 
-    # TODO: When adding states, add target and check for
     # Paralyzed or other conditions that would cause auto crits
     def is_critical_hit(self, roll: int):
         return roll == 20

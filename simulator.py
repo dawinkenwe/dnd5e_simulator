@@ -11,10 +11,11 @@ from stats import StatBlock
 from weapon import Weapon, WeaponProperties, WeaponType
 
 class Simulator:
-    def __init__(self, num_simulations: int=0):
+    def __init__(self, num_simulations: int=0, debug_print: bool=False):
         self.num_simulations = num_simulations
         self.results = []
         self.combat_instance = None
+        self.debug_print = debug_print
 
     def create_combat_instance(self, debug_print=False):
         heroes = []
@@ -66,7 +67,7 @@ class Simulator:
                                        weapon=longsword,
                                        number_of_attacks=2
                                        )
-            enemy = Combattant(character_sheet=sheet, ac_override=17)
+            enemy = Combattant(character_sheet=sheet, ac_override=17, is_surprised=False)
             enemies.append(enemy)
         stats = StatBlock(str_val=16, dex_val=14, con_val=15, int_val=12, wis_val=14, cha_val=12)
         sheet = CharacterSheet(name="Dragon Army Officer",
@@ -81,7 +82,7 @@ class Simulator:
                                number_of_attacks=2,
                                ac_override=19
                                )
-        officer = Combattant(character_sheet=sheet, ac_override=19)
+        officer = Combattant(character_sheet=sheet, ac_override=19, is_surprised=False)
         enemies.append(officer)
 
         instance = CombatInstance(heroes=heroes, enemies=enemies, debug_print=debug_print)
@@ -89,7 +90,7 @@ class Simulator:
 
     def run_simulations(self):
         for _ in range(self.num_simulations):
-            self.create_combat_instance(debug_print=self.num_simulations < 2)
+            self.create_combat_instance(debug_print=self.debug_print)
             result = self.combat_instance.run()
             self.results.append(result)
 
@@ -98,7 +99,8 @@ class Simulator:
             for result in self.results:
                 print("#"*32)
                 for survivor in result[1]:
-                    print(survivor)
+                    if not survivor.is_dead():
+                        print(survivor)
         else:
             skeetons = defaultdict(int)
             soldiers = defaultdict(int)
@@ -113,7 +115,7 @@ class Simulator:
             print(f"Soldiers survival counts: {dict(soldiers)}")
 
 if __name__ == "__main__":
-    sim = Simulator(num_simulations=1000)
+    sim = Simulator(num_simulations=100, debug_print=True)
     sim.run_simulations()
     sim.print_results()
             

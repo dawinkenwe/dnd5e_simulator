@@ -31,7 +31,7 @@ class TestBattleGrid(unittest.TestCase):
         for x, y in wall_coords:
             self.grid.grid[x][y] = wall
         dist = self.grid.walking_distance_from_coord1_to_coord2((0, 0), (4, 4))
-        self.assertEqual(dist, 10)
+        self.assertEqual(dist, 10*5)
         dist = self.grid.walking_distance_from_coord1_to_coord2((0, 0), (0, 1))
         self.assertEqual(dist, -1)
 
@@ -43,6 +43,25 @@ class TestBattleGrid(unittest.TestCase):
         expected_line = [(0, 0), (1, 0), (1, 1), (2, 1), (2, 2), (3, 2), (4, 3)]
         line = self.grid.get_line_from_coord1_to_coord2((0,0), (4,3))
         self.assertEqual(line, expected_line)
+
+    def test_has_line_of_sight(self):
+        self.grid = BattleGrid(row_size=6, column_size=6)
+        wall = GridSquare(is_blocked=True, display_str="*")
+        wall_coords = [(0, 1), (1, 1), (2, 1), (3, 1), (5, 1), (5, 2), (5, 3), (4, 3)]
+        for x, y in wall_coords:
+            self.grid.grid[x][y] = wall
+        expected_value = True
+        value = self.grid.has_line_of_sight((0,0), (4,0))
+        self.assertEqual(value, expected_value)
+        expected_value = True
+        value = self.grid.has_line_of_sight((0,0), (4,1))
+        self.assertEqual(value, expected_value)
+        expected_value = False
+        value = self.grid.has_line_of_sight((0,0), (4,2))
+        self.assertEqual(value, expected_value)
+        expected_value = False
+        value = self.grid.has_line_of_sight((0,0), (0,2))
+        self.assertEqual(value, expected_value)
 
 
 if __name__ == '__main__':

@@ -46,7 +46,7 @@ class BattleGrid:
 
     def walking_distance_from_coord1_to_coord2(self, coord1: Tuple[int,int], coord2: Tuple[int, int]):
         path = self.get_walkable_path_from_coord1_to_coord2(coord1, coord2)
-        return len(path) if path else -1
+        return 5 * len(path) if path else -1
 
     # See https://forum.gamemaker.io/index.php?threads/how-to-find-every-square-a-line-passes-through.101130/
     def get_line_from_coord1_to_coord2(self, coord1: Tuple[int,int], coord2: Tuple[int, int]) -> List[Tuple[int, int]]:
@@ -89,7 +89,7 @@ class BattleGrid:
         return coordinates_in_line
 
     def has_line_of_sight(self, coord1: Tuple[int, int], coord2: Tuple[int, int]):
-        line = self.get_list_of_coords_in_line_from_coord1_to_coord2(coord1, coord2)
+        line = self.get_line_from_coord1_to_coord2(coord1, coord2)
         for coord in line:
             if self.get_coord(coord).is_blocked:
                 return False

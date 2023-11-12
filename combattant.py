@@ -1,3 +1,4 @@
+from battle_grid import grid_square
 from character_sheet import CharacterSheet
 from dice_roller import roll_d20, roll_xdy
 from damage import Damage
@@ -11,7 +12,8 @@ class Combattant:
                  character_sheet: CharacterSheet,
                  ac_override: int=0,
                  is_surprised: bool=False,
-                 coordinates: Tuple[int, int] = (0,0)):
+                 coordinates: Tuple[int, int] = (0,0),
+                 is_hero: bool=False):
         self.character_sheet = character_sheet
         self.init = 0
         self.name = character_sheet.name
@@ -19,6 +21,8 @@ class Combattant:
         self.is_surprised = is_surprised
         self.movement_remaining = self.character_sheet.movement_speed
         self.coordinates = coordinates
+        self.has_reaction = True
+        self.is_hero = is_hero
 
     def calculate_ac(self) -> int:
         return self.ac_override if self.ac_override else self.character_sheet.calculate_ac()
@@ -30,9 +34,6 @@ class Combattant:
 
     def has_disadvantage(self, range:int = 5) -> bool:
         return self.character_sheet.weapon.has_disadvantage_at_range(range)
-
-    def does_attack_hit(self, atk_roll: int) -> bool:
-        return atk_roll >= self.calculate_ac()
 
     def take_damage(self, damage: Damage) -> None:
         self.character_sheet.take_damage(damage)
@@ -63,17 +64,35 @@ class Combattant:
     def is_critical_hit(self, roll: int):
         return roll == 20
 
-    def make_attack_roll(self) -> Tuple[int, bool]:
-        return self.character_sheet.make_attack_roll()
+    def make_attack(self) -> Tuple[int, Damage, bool]:
+        attack_roll, is_crit = self.character_sheet.make_attack_roll()
+        damage = character_sheet.make_damage_roll(is_critical=is_crit)
+        return (attack_roll, damage, is_crit)
 
-    def make_damage_roll(self, is_critical: bool=False) -> Damage:
-        return self.character_sheet.make_damage_roll(is_critical=is_critical)
+    def take_attack(self, attack_roll: int, damage: Damage, is_critical: bool):
+        if attack_roll >= self.calculate_ac() or is_critical:
+            self.take_damage(damage=damage)
 
     def pick_target(self, targets):
         for target in targets:
             if not target.is_down():
                 return target
         return None
+
+    def get_coordinates(self) -> Tuple[int, int]:
+        return self.coordinates
+
+    def set_coordinates(self, coordinates: Tuple[int, int]) -> None:
+        self.coordinates = coordinates
+
+    def has_reaction(self) -> bool:
+        return self.has_reaction
+
+    def do_start_of_round_checks(self):
+        pass
+
+    def do_end_of_round_checks(self):
+        pass
 
     def __str__(self):
         out = f"""Name: {self.name}

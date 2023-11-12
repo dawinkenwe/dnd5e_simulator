@@ -72,6 +72,11 @@ class HealthPool:
         self.death_save_failures = 0
         self.death_save_successes = 0
 
+    def reset_all(self) -> None:
+        self.hp = self.max_hp
+        self.available_hit_dice = self.num_hit_dice
+        self.reset_death_saves()
+
     def roll_hit_die(self) -> int:
         if self.available_hit_dice < 1:
             return 0

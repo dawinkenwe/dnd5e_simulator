@@ -129,5 +129,18 @@ class CharacterSheet:
             damage.dmg = damage.dmg * 2
         self.health_pool.remove_hp(damage.dmg)
 
+    def take_long_rest(self):
+        if self.health_pool.is_dead():
+            return
+        self.health_pool.reset_all()
+
+    def take_short_rest(self):
+        if self.health_pool.is_dead():
+            return
+        while self.health_pool.current_hp < self.health_pool.max_hp and self.health_pool.available_hit_dice > 0:
+            roll = self.health_pool.roll_hit_die()
+            roll += self.stat_block.get_modifier_for_stat("con")
+            self.health_pool.add_hp(roll)
+
     def roll_skill_check(self, skill: Skill, ) -> int:
         pass

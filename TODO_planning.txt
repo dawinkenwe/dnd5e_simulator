@@ -1,58 +1,13 @@
-None of that noise.
+MINIMUM. ACCEPTANCE. CRITERIA.
 
-Breaking it down in to objects based off of what I have. using language that is people language.
+EMPHASIS ON THE MINIMUM.
 
-An instance of combat (CombatInstance) has in it many combattants (Combattants)
-Combattants can be on either heroes or villains side. - tracked by two lists in the CombatInstance object.
+We will start with ONLY MONSTERS
+We will start with ONLY WEAPON ATTACKS
+We will start with ONLY ONE WEAPON
+We will start with NO SIGHT CONCERNS
+We will start with EVERY MOVEMENT AS 5 FEET
+We will start with the simplest turns. If can reach, attack. if can't reach, move. If can reach after move, attack.
+If still can't reach, dash and move again.
 
-combat can be ran (CombatInstance.run()). At the start of the instance, all combattants roll for initiative
-(CombatInstance.roll_for_initiatives())
-
-combattants can be surprised. IF they are, their turn is used clearning the condition.
-
-CombatInstances also have a (Grid). The Grid represents
-
-
-Somehow the is_down function along with the death saves is fucking up the combat.
-
-
-
-
-
-
-
-Keep Character sheet up in second monitor. Design based off of existing encapsulation.
-
-We should have all the components we need for some very basic things.
-
-Let's go ahead and try testing some of the classes. Start with health pool, then move to armor, weapon,
-damage, and equipment_manager. Finally tie it all in together with character_sheet.py
-
-
-
-Equipment manager - instead of doing offhand, on hand - as those aren't weapon properties they are attack properties,
-we can do a equipment has hand_cost and then sum the hand_cost. If heavy or two_handed, hands_required = 2.
-
-Then when we returned the equipped weapon, it's just an array of either length 2 or 1.
-
-Honestly I just wanted to make the skeletons and the dragon army soldiers fight it out so that I could prove that my
-lovely little skeeton bois would be able to take the dragon army soldiers. And they couldn't.
-
-What started as a one day hack project to answer a simple question balooned beyond my own expectations, driven by
-infinite scope creep, thinking so sky blue that babies wouldn't be able to see it because their cones aren't developed
-enough. Stuck in grayge hell with all teh pastel parents.
-
-What are we actually trying to accomplish?
-
-I think in all the sthinking about HOW to do stuff, how to scale stuff, how to structure stuff, I lost the thread on
-WHAT I was trying to do. - requirements doc vs
-
-For now, let's leave it at martials only, have one weapon, fight. charactersheets are used to roll damage, and have ac.
-If ac override is present, it just does it.
-
-Using charactersheet model, make a fight.
-
-then we can... what? what exactly? Add a movement system?
-
-Combats have a grid. combattants can move around the grid.
-Grids have terrain, normal rough impassable
+DO NOT. DO. NOT. worry about designing for extendability. JUST. DO.

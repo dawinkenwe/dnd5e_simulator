@@ -64,7 +64,8 @@ class CombatInstance:
                 self.num_enemies -= 1
 
     def do_movement_and_actions_for_combattant(self, combattant: Combattant):
-        # IF our weapon is ranged, look for closest line of site enemy.
+        # I've been stuck on this for quite some time.
+        # Get closest combattants sorted by
         pass
 
     def do_current_turn(self) -> None:

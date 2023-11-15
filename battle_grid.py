@@ -1,3 +1,5 @@
+from combattant import Combattant
+
 from collections import deque
 from typing import List, Optional, Tuple
 class GridSquare:
@@ -15,6 +17,8 @@ class BattleGrid:
         self.row_size = row_size
         self.column_size = column_size
         self.grid = [[GridSquare() for i in range(row_size)] for j in range(column_size)]
+        self.enemy_coords = set()
+        self.hero_coords = set()
 
     def is_coord_in_grid(self, coord: Tuple[int, int]):
         x, y = coord[0], coord[1]
@@ -94,6 +98,14 @@ class BattleGrid:
             if self.get_coord(coord).is_blocked:
                 return False
         return True
+
+    def get_closest_enemies(self, combattant: Combattant) -> List[Combattant]:
+        # TODO: handle cases where we have things in the way.
+        for enemy in self.enemy_coords.keys():
+
+        enemies = [enemy for enemy in self.enemy_coords.keys()].sort(key=lambda: walking_distance_from_coord1_to_coord2())
+        for coord in self.enemy_coords:
+
 
     def get_coord(self, coord: Tuple[int, int]) -> Optional[GridSquare]:
         return self.grid[coord[0]][coord[1]]

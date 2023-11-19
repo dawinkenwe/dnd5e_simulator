@@ -10,6 +10,37 @@ from weapon import Weapon, WeaponProperties, WeaponType
 
 # Python Lib Imports
 from typing import List, Tuple
+
+class MonsterSheet:
+    def __init__(self,
+                 name: str,
+                 ac: int,
+                 max_hp: int,
+                 speed: int,
+                 stat_block: StatBlock,
+                 damage_vulnerabilities: List[DamageType],
+                 damage_immunities: List[DamageType],
+                 challenge_rating: float,
+                 experience: int,
+                 weapons: List[Weapon],
+                 num_attacks: int,
+                 ):
+        self.name = name
+        self.ac = ac
+        self.speed = speed
+        self.stat_block = stat_block
+        self.damage_vulnerabilities = damage_vulnerabilities
+        self.damage_immunities = damage_immunities
+        self.challenge_rating = challenge_rating
+        self.experience = experience
+        self.health_pool = HealthPool(max_hp=max_hp)
+        self.weapons = weapons
+        self.num_attacks = num_attacks
+
+    def calculate_armor_class(self) -> int:
+        return self.ac
+
+
 class CharacterSheet:
     def __init__(self,
                  name: str,
